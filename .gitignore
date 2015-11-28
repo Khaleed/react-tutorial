@@ -9,6 +9,11 @@ npm-debug.log*
 #envs
 envs
 
+#other nonesense to ignore
+.DS_Store
+.editorconfig
+LICENCE
+
 # Runtime data
 pids
 *.pid
