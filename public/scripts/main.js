@@ -1,14 +1,3 @@
-// source of data
-	// let data = [{
-	// 	id: 1,
-	// 	author: "Khalid Ali",
-	// 	text: "This is one comment"
-	// }, {
-	// 	id: 2,
-	// 	author: "John Mannah",
-	// 	text: "This is *another* comment"
-	// }];
-
 let CommentBox = React.createClass({
 	loadCommentsFromServer() {
 		$.ajax({
@@ -25,6 +14,10 @@ let CommentBox = React.createClass({
 			}.bind(this)
 		});
 	},
+	handleCommentSubmit(comment) {
+		// submit to server and refresh
+
+	},
 	// excutes once 
 	getInitialState: function() {
 		return {data: []};
@@ -35,10 +28,10 @@ let CommentBox = React.createClass({
 	},
 	render() {
 		return (
-			<div className = "commentBox">
+			<div className = 'commentBox'>
 			    <h1> Comments </h1>  
 			    <CommentList data={this.state.data} />
-			    <CommentForm />
+			    <CommentForm onCommentSubmit={this.handleSubmit} />
 			</div>
 		);
 	}
@@ -55,18 +48,58 @@ let CommentList = React.createClass({
 				</Comment>
 			);
 		});
-		return(
-			<div className="commentList">
+		return (
+			<div className='commentList'>
 			    {commentNodes} 
 			</div>
 		);
 	}
 });
-
+// ask user for name and comment
+// and send request to server to save that comment
 let CommentForm = React.createClass({
-	getInitialState: function() {
-		
+	getInitialState() {
+		return {author: '', text: ''}
 	},
+	handleAuthorChange() {
+		// this changes the private state of the component
+		this.setState({author: e.target.value});
+	},
+	handleTextChange() {
+		this.setState({text: e.target.value});
+	},
+	handleSubmit(e) {
+		e.preventDefault();
+		let author = this.state.author.trim();
+		let text = this.state.text.trim();
+		if (!author || !text) {
+			return;
+		}
+		// send request to server once user 
+
+		// change state back to default
+		this.setState({author: '', text: ''});
+	},
+	render() {
+		return (
+			<form className='commentForm' onSubmit={this.handleSubmit}>
+			    <input
+			        type='text'
+			        placeholder = 'Your name'
+			        value= {this.state.author}
+			        // attach event handler
+			        onChange= {this.handleAuthorChange}
+			   />
+			   <input
+			        type='author'
+			        placeholder = 'Say something...'
+			        value= {this.state.text}
+			        onChange= {this.handleTextChange}
+			   />
+			   <input type='submit' value='Post'/>
+			</form>
+			);
+	}
 });
 
 let Comment = React.createClass({
@@ -77,8 +110,8 @@ let Comment = React.createClass({
 
 	render() {
 		return (
-			<div className = "comment" >
-			    <h2 className="commentAuthor"> 
+			<div className = 'comment' >
+			    <h2 className='commentAuthor'> 
 			        {this.props.author}
 			    </h2> 
 			        <span dangerouslySetInnerHTML= {this.rawMarkUp()} />  
@@ -88,7 +121,9 @@ let Comment = React.createClass({
 });
 
 ReactDOM.render(
-	<CommentBox url="/api/comments" pollInterval={2000} />,
+	// fetch data from server every 2 seconds
+	// the component will re-render itself every time it gets new data
+	<CommentBox url='/api/comments' pollInterval={2000} />,
 	document.getElementById('container')
 );
 
