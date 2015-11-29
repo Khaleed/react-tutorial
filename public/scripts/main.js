@@ -5,9 +5,7 @@ let CommentBox = React.createClass({
 			dataType: 'json',
 			cache: false,
 			success: function(data) {
-				this.setState({
-					data: data
-				})
+				this.setState({data: data})
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(this.props.url, status, err.toString());
@@ -15,10 +13,21 @@ let CommentBox = React.createClass({
 		});
 	},
 	handleCommentSubmit(comment) {
-		// submit to server and refresh
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			type: 'POST',
+			data: comment,
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
 	},
 	// excutes once 
-	getInitialState: function() {
+	getInitialState() {
 		return {data: []};
 	},
 	componentDidMount() {
@@ -30,7 +39,7 @@ let CommentBox = React.createClass({
 			<div className = 'commentBox'>
 			    <h1> Comments </h1>  
 			    <CommentList data={this.state.data} />
-			    <CommentForm onCommentSubmit={this.handleSubmit} />
+			    <CommentForm onCommentSubmit={this.handleCommentSubmit} />
 			</div>
 		);
 	}
@@ -60,11 +69,11 @@ let CommentForm = React.createClass({
 	getInitialState() {
 		return {author: '', text: ''}
 	},
-	handleAuthorChange() {
+	handleAuthorChange(e) {
 		// this changes the private state of the component
 		this.setState({author: e.target.value});
 	},
-	handleTextChange() {
+	handleTextChange(e) {
 		this.setState({text: e.target.value});
 	},
 	handleSubmit(e) {

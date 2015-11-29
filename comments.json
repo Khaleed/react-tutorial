@@ -9,7 +9,6 @@
         "author": "Spandex Raindeer",
         "text": "Emacs is *great*!"
     },
-
     {
         "id": 1388634400000,
         "author": "Keyboard Inputter",
@@ -19,5 +18,10 @@
         "id": 1460070400000,
         "author": "Glitch Master",
         "text": "Kushana is *great*!"
+    },
+    {
+        "id": 1448777197178,
+        "author": "Goat Herder",
+        "text": "Functional Programing is Awesome"
     }
 ]
