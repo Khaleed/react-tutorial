@@ -16,7 +16,6 @@ let CommentBox = React.createClass({
 	},
 	handleCommentSubmit(comment) {
 		// submit to server and refresh
-
 	},
 	// excutes once 
 	getInitialState: function() {
@@ -75,8 +74,8 @@ let CommentForm = React.createClass({
 		if (!author || !text) {
 			return;
 		}
-		// send request to server once user 
-
+		// send request to server
+		this.props.onCommentSubmit({author: author, text: text});
 		// change state back to default
 		this.setState({author: '', text: ''});
 	},
